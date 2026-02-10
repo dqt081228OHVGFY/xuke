@@ -1,0 +1,94 @@
+# wrangler.toml - Cloudflare Worker配置文件
+name = "xueke-download-system"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# 环境变量配置
+[vars]
+# 系统信息
+SYSTEM_NAME = "学科网下载系统"
+SYSTEM_VERSION = "2.0.0"
+ENVIRONMENT = "production"
+
+# 安全配置
+JWT_SECRET = "your-jwt-secret-key-change-this-in-production"
+ENABLE_RATE_LIMIT = "true"
+RATE_LIMIT_REQUESTS = "100"
+RATE_LIMIT_PERIOD = "3600"
+
+# 任务配置
+MAX_FILE_SIZE = "10485760"  # 10MB
+MAX_TASKS_PER_USER = "100"
+MAX_URLS_PER_TASK = "50"
+SESSION_TIMEOUT = "3600"  # 1小时
+TASK_TIMEOUT = "300"  # 5分钟
+
+# 通知配置
+ENABLE_EMAIL_NOTIFICATIONS = "false"
+SMTP_HOST = "smtp.gmail.com"
+SMTP_PORT = "587"
+SMTP_USER = "your-email@gmail.com"
+SMTP_PASS = "your-app-password"
+EMAIL_SENDER = "noreply@xuke.ambition.qzz.io"
+
+# 存储配置
+MAX_TASK_HISTORY = "1000"
+MAX_USER_HISTORY = "100"
+BACKUP_INTERVAL = "86400"  # 24小时
+
+# 调试配置
+DEBUG_MODE = "false"
+LOG_LEVEL = "info"
+ENABLE_MOCK_DOWNLOAD = "true"
+
+# KV命名空间绑定
+[[kv_namespaces]]
+binding = "KV_NAMESPACE"
+id = bdcc77b51fe34e37a26c44a1e376fc05  # 这里需要替换成你的KV命名空间ID
+
+# 网站配置（可选，用于托管前端）
+[site]
+bucket = "./public"
+entry-point = "."
+index-page = "index.html"
+
+# 定时任务配置
+[triggers]
+crons = ["0 * * * *", "0 0 * * *"]  # 每小时和每天执行
+
+# 路由配置（如果需要自定义域名）
+# routes = [
+#   { pattern = "xuke.ambition.qzz.io/*", zone_name = "ambition.qzz.io" }
+# ]
+
+# 构建配置
+[build]
+command = "echo 'Building...'"
+watch_dir = "src"
+upload.format = "modules"
+upload.main = "./worker.js"
+
+# 开发配置
+[dev]
+port = 8787
+ip = "127.0.0.1"
+local_protocol = "http"
+upstream_protocol = "http"
+
+# 日志配置
+[logpush]
+enabled = true
+
+# 环境配置（多环境支持）
+[env.production]
+name = "xueke-download-system-prod"
+vars = { ENVIRONMENT = "production" }
+
+[env.staging]
+name = "xueke-download-system-staging"
+vars = { ENVIRONMENT = "staging" }
+
+[env.development]
+name = "xueke-download-system-dev"
+vars = { ENVIRONMENT = "development" }
