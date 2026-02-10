@@ -45,7 +45,7 @@ ENABLE_MOCK_DOWNLOAD = "true"
 # KV命名空间绑定
 [[kv_namespaces]]
 binding = "KV_NAMESPACE"
-id = bdcc77b51fe34e37a26c44a1e376fc05  # 这里需要替换成你的KV命名空间ID
+id = 4S1HvuVLQvQgXxOdIWZv2r02KRuYA2kYH5B98q0s  # 这里需要替换成你的KV命名空间ID
 
 # 网站配置（可选，用于托管前端）
 [site]
@@ -91,4 +91,5 @@ vars = { ENVIRONMENT = "staging" }
 
 [env.development]
 name = "xueke-download-system-dev"
+
 vars = { ENVIRONMENT = "development" }
